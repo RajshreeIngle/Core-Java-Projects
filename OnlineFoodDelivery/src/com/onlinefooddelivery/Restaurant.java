@@ -1,6 +1,8 @@
 package com.onlinefooddelivery;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Restaurant {
 	/*
@@ -111,4 +113,11 @@ public class Restaurant {
 				+ foodCategory + "]";
 	}
 	
+	
+	public Restaurant getRestaurant(int id, List<Restaurant> listOfRestuarants) {
+		Restaurant selectedRestaurant = listOfRestuarants.stream()
+				.filter(rest->rest.getId()==id)
+				.findFirst().get();
+		return selectedRestaurant;
+	}
 }

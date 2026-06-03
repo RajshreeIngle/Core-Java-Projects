@@ -1,5 +1,6 @@
 package com.emppayroll;
 
+import java.util.Map;
 import java.util.Scanner;
 
 public class EmployeePayrollManagement {
@@ -39,10 +40,10 @@ public class EmployeePayrollManagement {
 		        id = scanner.nextInt();
 		        scanner.nextLine();
 		        System.out.print("Enter Employee Name: ");
-		        name = scanner.nextLine();
+		        name = scanner.nextLine().trim();
 		        while(!EmployeeDataUtility.validateName(name)) {
 		        	System.out.print("Enter Employee Name: ");
-			        name = scanner.nextLine();
+			        name = scanner.nextLine().trim();
 		        }
 		        System.out.print("Enter Role of Employee (1.Intern, 2.Permanent 3.Contractual): ");
 		        role = scanner.nextInt();
@@ -112,13 +113,24 @@ public class EmployeePayrollManagement {
 				System.out.print("Enter Employee ID you want to DELETE: ");
 		        int e_id = scanner.nextInt();
 		        scanner.nextLine();
-		        PayRollSystem.deleteEmployee(e_id);
+		        try {
+		        	PayRollSystem.deleteEmployee(e_id);
+		        }catch(EmployeeIdNotFoundException e) {
+		        	System.out.println(e);
+		        }
 		        break;
 			case 4:
 				System.out.print("Enter Employee ID to print pay slip: ");
 		        int empID = scanner.nextInt();
 		        scanner.nextLine();
-		        PayRollSystem.employeesRecord.get(empID).printPaySlip();
+		        try {
+		        	if (!PayRollSystem.employeesRecord.containsKey(empID)) {
+		        	    throw new EmployeeIdNotFoundException("Employee ID not found");
+		        	}
+		        	PayRollSystem.employeesRecord.get(empID).printPaySlip();
+		        }catch(EmployeeIdNotFoundException e) {
+		        	System.out.println(e);
+		        }
 		        break;
 		    default:
 		    	System.out.println("Invalid selection. Try Again");

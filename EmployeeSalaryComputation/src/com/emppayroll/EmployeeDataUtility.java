@@ -3,7 +3,7 @@ package com.emppayroll;
 public class EmployeeDataUtility {
 	
 	public static boolean validateName(String input) {
-		if (input.matches("[a-zA-Z]+")) {
+		if (input.matches("[a-zA-Z\\s]+")) {
 //            System.out.println("Valid name!");
             return true;
         } else {

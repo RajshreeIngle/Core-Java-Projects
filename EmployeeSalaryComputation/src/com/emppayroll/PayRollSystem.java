@@ -45,7 +45,11 @@ public class PayRollSystem {
 		System.out.println();
 	}
 	
-	public static void deleteEmployee(int id) {
+	public static void deleteEmployee(int id) throws EmployeeIdNotFoundException {
+		if(!employeesRecord.containsKey(id)) {
+			System.out.println("ID Not Found");
+			throw new EmployeeIdNotFoundException("Employee ID not found");
+		}
 		employeesRecord.remove(id);
 		System.out.println("-----------------------------");
 		System.out.println("Employee deleted successfully");

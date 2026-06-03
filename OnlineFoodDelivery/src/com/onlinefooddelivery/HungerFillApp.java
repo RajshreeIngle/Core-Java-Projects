@@ -64,22 +64,31 @@ public class HungerFillApp {
 		 * show id at menu for user input, trim it. scanner for user input.
 		 */
 		System.out.println();
-//		while(checkout != 0) {
 		restuarants.forEach(res->System.out.println(res.getId()+"."+res.getRestaurantName()));
 		System.out.println();
-		
+		boolean restaurantSelected = false; // added for restaurant selection check
+		while(restaurantSelected == false) {
 		System.out.print("Select the Restaurant number to see menu and details : ");
 		int choosedRestaurant = sc.nextInt();
 		sc.nextLine();
 		System.out.println();
-		selectedRestaurant = listOfRestuarants.stream()
-				.filter(rest->rest.getId()==choosedRestaurant)
-				.findFirst().get();
+		
+			try {
+				selectedRestaurant = listOfRestuarants.stream()
+						.filter(rest->rest.getId()==choosedRestaurant)
+						.findFirst().get();
+				restaurantSelected = true;
+			}catch(Exception e) {
+				System.out.println("No Valid Restaurant selected, Select Valid number ,Try Again !");
+				
+			}
+		}
+		
+		
 		System.out.println("--------------------------------------------------------");
 		System.out.println(selectedRestaurant.getRestaurantName() +", " + selectedRestaurant.getAddress() +" (Cuisine:"+ selectedRestaurant.getFoodCategory()+")");
 		selectedRestaurant.displayMenu();
 		System.out.println();
-//			int addToCart =1;
 		while(checkout !=0) {
 			try {
 				System.out.print("Select the Food Item number to add to Cart: ");
@@ -89,9 +98,19 @@ public class HungerFillApp {
 					System.out.println("Invalid selection! Try Again");
 					continue;
 				}
-				System.out.print("Enter Quantity for selected food item ("+ selectedRestaurant.getFoodItems().get(selectedFoodItem-1).getFoodName()+"): ");
-				int qty = sc.nextInt();
-				sc.nextLine();
+				/*
+				 * TOD Quantity check greater than 0;
+				 */
+				int qty =0;
+				while(qty == 0) {
+					System.out.print("Enter Quantity for selected food item ("+ selectedRestaurant.getFoodItems().get(selectedFoodItem-1).getFoodName()+"): ");
+					qty = sc.nextInt();
+					sc.nextLine();
+					if(qty == 0) {
+						System.out.println("Quantity cannot be zero,please enter again");
+					}
+				}
+				
 				cart.addItemToCart(selectedRestaurant.getFoodItems().get(selectedFoodItem-1), qty);
 				System.out.print("ENTER 1 to add another Item, else 0 to checkout:");
 				checkout = sc.nextInt();
